@@ -7,7 +7,7 @@
 
 ;;; Options
 (defvar ask-api-url    "https://api.anthropic.com/v1/messages")
-(defvar ask-models     '("claude-3-opus-20240229" "claude-3-5-sonnet-20240620" "claude-3-haiku-20240307"))
+(defvar ask-models     '("claude-3-opus-20240229" "claude-3-5-sonnet-20241022" "claude-3-5-sonnet-20240620" "claude-3-haiku-20240307"))
 (defvar ask-model       (car (last ask-models))) ;; haiku
 (defvar ask-version    "2023-06-01")
 (defvar ask-max-tokens 1024)
@@ -392,7 +392,7 @@ provide code suggestions. Each suggestion have a one line short description.
     (let ((plist  (when (re-search-backward "^#\\+begin_prompt" nil t)
                     (forward-word)
                     (forward-word)
-                    (read (concat "(" (buffer-substring-no-properties (point) (line-end-position)) ")"))))
+                    (read (concat "(" (buffer-substring-no-properties (point) (line-end-position)) ")")))) ;; reads properties
           (prompt (when (re-search-backward "^#\\+begin_prompt" nil t)
                     (forward-line)
                     (buffer-substring-no-properties (point)
