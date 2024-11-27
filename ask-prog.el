@@ -9,7 +9,7 @@
 
 (require 'ask-core)
 
-(defun ask-project-client ()
+(defun ask-prog-client ()
   "Prompt for the project client information."
   (ask-make-client))
 
@@ -53,7 +53,7 @@ provide code suggestions. Each suggestion have a one line short description.
     (goto-char (point-max))
     (insert (format "\n\n#+begin_prompt\n%s\n#+end_prompt\n#+property: :begin_region %s :end_region %s\n\n" ask-template-prompt rb re))
     ;;; TODO: (insert (org-insert-link link "source file"))
-    (insert (ask-prompt (ask-project-client)
+    (insert (ask-prompt (ask-prog-client)
                         (ask-code-review-prompt current-region)
                         :system (ask-code-system-prompt buffer-major-mode)))
     (org-mode)))

@@ -9,7 +9,7 @@
 
 (require 'ask-core)
 
-(defun ask-project-client ()
+(defun ask-blog-client ()
   "Prompt for the project client information."
   (ask-make-client))
 
@@ -56,7 +56,7 @@ Don't forget to put the code language after the opening ```"))
                     ask-template-hugo-post
                     rb re))
     ;;; TODO: (insert (org-insert-link link "source file"))
-    (insert (ask-prompt (ask-project-client)
+    (insert (ask-prompt (ask-blog-client)
                         (ask-blog-prompt current-region)
                         :model (cadr ask-models)
                         :system "You are an excellent and engaging blog writer."))
