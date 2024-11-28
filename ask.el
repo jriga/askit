@@ -45,7 +45,7 @@
 (ask-deftool ask-get-commit (message)
   "Commits staged items on branch."
   :message (:string "Commit staged changes")
-  (shell-command-to-string "git commit -am 'nthn'"))
+  (shell-command-to-string (format "git commit -am '%s'" message)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
