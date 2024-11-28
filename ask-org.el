@@ -34,19 +34,18 @@
   "Return a random string."
   (format "%s" (time-convert (current-time) 'integer)))
 
-(defun ask-add-session-property (session)
+(defun ask-add-property (key value)
+  "Add a property `KEY` and its value `VALUE` to properties list."
   (save-excursion
     (goto-char (point-min))
     (search-forward ask-org-properties-token nil t)
     (let ((line (thing-at-point 'line))
-          (str-session (format ":session %s" session)))
-      (if (string-match str-session line)
+          (token (format "%s %s" key value)))
+      (if (string-match token line)
           nil
         (progn
           (end-of-line)
-          (insert str-session))))))
-
-
+          (insert token))))))
 
 (defun ask-org-client-add (options)
   ""
@@ -55,7 +54,7 @@
          (client-options (cons '() (cons '() options)))
          (client (apply 'ask-make-client client-options)))
     (puthash session client ask-clients-reg)
-    (ask-add-session-property session)
+    (ask-add-property :session session)
     client))
 
 (defun ask-org-client ()
@@ -66,6 +65,7 @@
     (if client client (ask-org-client-add options))))
 
 (defun ask-prompt-at-point ()
+  "Send prompt at point."
   (interactive)
   (save-excursion
     (let ((plist  (when (re-search-backward "^#\\+begin_prompt" nil t)
@@ -87,6 +87,24 @@
                            (append '() `(,(ask-prompt-with-org-format prompt)) plist))))
         (message "No valid prompt found at point.")))))
 
+(defun ask-dump-client ()
+  "Dump the current buffer session."
+  (interactive)
+  (let* ((options (ask-org-project-properties))
+         (client (ask-org-client))
+         (link (ask-org-roam-save-session (plist-get options :session)
+                             (ask-history client)
+                             (ask-usage client)
+                             (or (plist-get options :model) ask-model)
+                             (or (plist-get options :version) ask-version)))))
+  (ask-add-property :link link))
+
+(defun ask-restore-client ()
+  "Restore the current buffer session."
+  (interactive)
+  (let* ((options (ask-org-project-properties))
+         (client (ask-load-saved-file (plist-get options :link))))
+    (puthash (plist-get options :session) client ask-clients-reg)))
 
 (provide 'ask-org)
 ;;; ask-org.el ends here

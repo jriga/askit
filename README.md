@@ -3,5 +3,6 @@
 Personal emacs frontend for claude AI this is very much work in progress.
 
 # TODOS
-[x] add session support
-[ ] change http lib to enable streaming responses
+- [x] add session support
+- [ ] dump/restore session
+- [ ] change http lib to enable streaming responses
