@@ -36,7 +36,7 @@
   (save-excursion
     (goto-char (point-min))
     (search-forward ask-org-properties-token nil t)
-    (let* ((line (buffer-substring-no-properties (point) (line-end-position) )))
+    (let ((line (buffer-substring-no-properties (point) (line-end-position))))
       (read (concat "(" line ")")))))
 
 (defun ask-rand-session-name ()

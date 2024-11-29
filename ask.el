@@ -23,19 +23,23 @@
 (require 'ask-prog)
 
 (defun ask-history (client)
+  "Return the history of the CLIENT."
   (funcall (plist-get client :history)))
 
 (defun ask-usage (client)
+  "Return the usage information of the CLIENT."
   (funcall (plist-get client :usage)))
 
 (defun ask-prompt (client prompt-text &rest options)
+  "Prompt the CLIENT with PROMPT-TEXT and OPTIONS."
   (funcall (plist-get client :prompt) prompt-text options))
 
 (defun ask-save (client name)
+  "Save the CLIENT with the given NAME."
   (funcall (plist-get client :save) name))
 
 (defun ask-load (name)
-  "Load client"
+  "Load the client with the given NAME."
   (let* ((filename (car (directory-files org-roam-directory t (format ".*%s.*\.org" name))))
          (data (ask-load-saved-file filename)))
     (ask-make-client (read (plist-get data :history))
@@ -46,13 +50,13 @@
 
 
 (ask-deftool ask-get-diff (name &optional remote)
-  "Get the diff of a branch name."
+  "Get the diff of a branch NAME with an optional REMOTE."
   :name   (:string "Name of the target branch")
   :remote (:string "Name of the target remote")
   (shell-command-to-string "git diff"))
 
 (ask-deftool ask-get-commit (message)
-  "Commits staged items on branch."
+  "Commit the staged items on the branch with the given MESSAGE."
   :message (:string "Commit staged changes")
   (shell-command-to-string (format "git commit -am '%s'" message)))
 
