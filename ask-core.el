@@ -1,11 +1,20 @@
-;;; ask-core.el --- ask claude ai                     -*- lexical-binding: t; -*-
+;;; ask-core.el --- ask core functions    -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024 Jerome Riga
+
+;; Author:     Jerome Riga <jriga@zemis.co.uk>
+;; Maintainer: Jerome Riga <jriga@zemis.co.uk>
+;; Version:    0.0.1
+;; Keywords:   lisp, ai, claude, anthropic
+;; Homepage:   https://github.com/jriga/askit
+;; Package-Requires: ((emacs "29.4"))
+
 ;;; Commentary:
 
-;;
+;; Interaction functions for claude AI
 
 ;;; Code:
 
-;;; Options
 (defvar ask-api-url    "https://api.anthropic.com/v1/messages")
 (defvar ask-models     '("claude-3-opus-20240229" "claude-3-5-sonnet-20241022" "claude-3-5-sonnet-20240620" "claude-3-haiku-20240307"))
 (defvar ask-model       (car (last ask-models))) ;; haiku

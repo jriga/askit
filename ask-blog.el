@@ -1,11 +1,19 @@
-;;; ask-blog.el --- ask claude ai                     -*- lexical-binding: t; -*-
+;;; ask-blog.el --- ask bloging utilities    -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024 Jerome Riga
+
+;; Author:     Jerome Riga <jriga@zemis.co.uk>
+;; Maintainer: Jerome Riga <jriga@zemis.co.uk>
+;; Version:    0.0.1
+;; Keywords:   lisp, ai, claude, anthropic
+;; Homepage:   https://github.com/jriga/askit
+;; Package-Requires: ((emacs "29.4"))
+
 ;;; Commentary:
 
-;;
+;; utilities for blog assitant
 
 ;;; Code:
-
-;;; Options
 
 (require 'ask-core)
 

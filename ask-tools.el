@@ -1,12 +1,19 @@
-;;; ask-tools.el --- ask claude ai                     -*- lexical-binding: t; -*-
+;;; ask-tools.el --- ask claude ai tools support    -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024 Jerome Riga
+
+;; Author:     Jerome Riga <jriga@zemis.co.uk>
+;; Maintainer: Jerome Riga <jriga@zemis.co.uk>
+;; Version:    0.0.1
+;; Keywords:   lisp, ai, claude, anthropic, tools
+;; Homepage:   https://github.com/jriga/askit
+;; Package-Requires: ((emacs "29.4"))
+
 ;;; Commentary:
 
-;;
+;; provides tools support for ask package
 
 ;;; Code:
-
-;;; Options
-
 (defvar ask-tools-properties-reg (make-hash-table))
 
 (defmacro ask-deftool (fn-name arg-list desc &rest rest)
@@ -57,3 +64,5 @@ TOOL, name of a function defined with ask-deftool."
 
 (provide 'ask-tools)
 ;;; ask-tools.el ends here
+
+(package-buffer-info)

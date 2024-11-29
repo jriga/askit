@@ -1,11 +1,20 @@
-;;; ask-org.el --- ask claude ai                     -*- lexical-binding: t; -*-
+;;; ask-org.el --- ask org integration    -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024 Jerome Riga
+
+;; Author:     Jerome Riga <jriga@zemis.co.uk>
+;; Maintainer: Jerome Riga <jriga@zemis.co.uk>
+;; Version:    0.0.1
+;; Keywords:   lisp, ai, claude, anthropic
+;; Homepage:   https://github.com/jriga/askit
+;; Package-Requires: ((emacs "29.4"))
+
 ;;; Commentary:
 
-;;
+;; Org simple integration with ask
 
 ;;; Code:
 
-;;; Options
 (require 'ask-core)
 
 (defvar ask-clients-reg (make-hash-table :test 'equal))
