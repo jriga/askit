@@ -15,12 +15,19 @@
 
 ;;; Code:
 
+(defgroup ask nil
+  "Interact with claude in Emacs."
+  :group 'hypermedia)
+
 (defvar ask-api-url    "https://api.anthropic.com/v1/messages")
 (defvar ask-models     '("claude-3-opus-20240229" "claude-3-5-sonnet-20241022" "claude-3-5-sonnet-20240620" "claude-3-haiku-20240307"))
 (defvar ask-model       (car (last ask-models))) ;; haiku
 (defvar ask-version    "2023-06-01")
 (defvar ask-max-tokens 1024)
-(defvar ask-api-key     (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey"))
+(defcustom ask-api-key #'ask-api-key-from-auth-source
+  "Function that returns the api-key as string."
+  :type 'function
+  :group 'ask)
 (defvar ask-temperature 0.0)
 (defvar ask-system      "")
 (defvar ask-tools       [])
@@ -31,12 +38,16 @@
   (let ((s (or m "-->> %s")))
     (message s o)))
 
+(defun ask-api-key-from-auth-source ()
+  "Return api-key string."
+  (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey"))
+
 (defun ask-anthropic-api-request
     (messages api-key version model max-tokens system temperature &optional tools tool_choice)
   "Send a request to the Anthropic API with the given API-KEY and MESSAGE."
   (let* ((url-request-method "POST")
          (url-request-extra-headers
-          `(("x-api-key" . ,api-key)
+          `(("x-api-key" . ,(funcall api-key))
             ("anthropic-version" . ,version)
             ("content-type" . "application/json")))
          (request-data
