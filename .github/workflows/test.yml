@@ -29,6 +29,10 @@ jobs:
     - name: Check out the source code
       uses: actions/checkout@v4
 
+    - name: Install extra deps
+      run: |
+        eldev prepare test
+
     - name: Test the project
       run: |
         eldev -p -dtT test
