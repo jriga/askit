@@ -28,12 +28,12 @@
   (mapcar 'ask-tool-def (hash-table-keys ask-tools-properties-reg)))
 
 (defun ask-tool-def--properties (tool)
-  "Return alist of tool properties."
+  "Return alist of TOOL properties."
   (let ((props (seq-split (gethash tool ask-tools-properties-reg) 2)))
     (mapcar 'ask-tool-def--properties-conv props)))
 
 (defun ask-tool-def--properties-conv (args)
-  "Convert plist to alist."
+  "Convert ARGS plist to alist."
   (let* ((k (car args))
          (v (cadr args))
          (n (ask-to-s k))

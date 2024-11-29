@@ -14,6 +14,7 @@
 ;; Interaction functions for claude AI
 
 ;;; Code:
+(require 'base64)
 
 (defgroup ask nil
   "Interact with claude in Emacs."
@@ -33,6 +34,7 @@
 (defvar ask-tools       [])
 (defvar ask-tool_choice '("type" . "auto"))
 (defvar ask-debug       t)
+(defconst ask-supported-image-ext '("png" "jpeg" "gif" "webp"))
 
 (defun ask-log (o &optional m)
   (let ((s (or m "-->> %s")))
@@ -82,15 +84,58 @@
 
 
 (defun ask-content (response)
+  "Extract block content from RESPONSE."
   (let ((block (ask-find-block response)))
     (if block
         (plist-get block :text)
       (aref (plist-get response :content) 0))))
 
+(defun ask-mk-single-msg (content role)
+  "Format single message to be sent with CONTENT and ROLE."
+  `((("role" . ,role)
+     ("content" . ,content))))
+
+
+(defun ask-mk-multi--prompt (prompt)
+  "Return formatted PROMPT for multi message request."
+  `(("type" . "text")
+    ("text" . ,prompt)))
+
+(defun ask-mk-multi--attachment-encode (file)
+  "Encode file content at FILE."
+  (with-temp-buffer
+    (insert-file-contents-literally file)
+    (base64-encode-region (point-min) (point-max) :no-line-break)
+    (buffer-string)))
+
+(defun ask-mk-multi--attachment (attachment)
+  "Return formatted ATTACHMENT image or document for multi message request."
+  (let* ((file-ext   (string-replace "jpg" "jpeg" (file-name-extension attachment)))
+         (is-image   (member file-ext ask-supported-image-ext))
+         (type       (if is-image "image" "document"))
+         (media-type (if is-image (format "image/%s" file-ext) "application/pdf"))
+         (data       (ask-mk-multi--attachment-encode attachment)))
+    `(("type" . ,type)
+      ("source" . (("type" . "base64")
+                   ("media_type" . ,media-type)
+                   ("data" . ,data))))))
+
+(defun ask-mk-multi-msg (content role)
+  "Format multiple messages to be sent with CONTENT and ROLE."
+  (let* ((prompt (plist-get content :prompt))
+         (attachments (plist-get content :attachments))
+         (msg-content (append (mapcar #'ask-mk-multi--attachment attachments)
+                              (list (ask-mk-multi--prompt prompt)))))
+  `((("role" . ,role)
+     ("content" . ,msg-content)))))
 
 (defun ask-mk-msg (content &optional role)
-  `((("role" . ,(or role "user"))
-    ("content" . ,content))))
+  "Return alist generated from CONTENT with specified ROLE or `user` by default."
+  (let ((msg-role (or role "user"))
+        (attachments (plist-get content :attachments)))
+    (if attachments
+        (ask-mk-multi-msg content msg-role)
+        (ask-mk-single-msg content msg-role))))
 
 (defun ask-update--history (messages response)
   "Handle prefilling when present"
@@ -176,13 +221,13 @@
   (let ((content (cdadar msg)))
     (vector `(:type "text" :text ,content))))
 
-(defmacro ask-get-handler (m)
+(defmacro ask-get-handler (messages)
   "return a response handler name"
   `(let ((type (or (plist-get response :type) "unsupported"))
          (prefill (plist-get (car options) :prefill)))
     (when (equal type "message")
       (setf usage (ask-update--usage usage response))
-      (setf history (ask-update--history ,m response)))
+      (setf history (ask-update--history ,messages response)))
     (funcall (intern (concat "ask-handler-" type))
              (if prefill
                (plist-put response :content (ask-prefilled-response (last history)))
