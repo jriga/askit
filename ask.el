@@ -1,11 +1,20 @@
-;;; ask.el --- ask claude ai                     -*- lexical-binding: t; -*-
+;;; ask.el --- ask claude ai wrapper    -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2024 Jerome Riga
+
+;; Author:     Jerome Riga <jriga@zemis.co.uk>
+;; Maintainer: Jerome Riga <jriga@zemis.co.uk>
+;; Version:    0.0.1
+;; Keywords:   lisp, ai, claude, anthropic
+;; Homepage:   https://github.com/jriga/askit
+;; Package-Requires: ((emacs "29.4"))
+
 ;;; Commentary:
 
-;;
+;; Interacts with claudeAI, support tools
+;; no streaming at the moment
 
 ;;; Code:
-
-;;; Options
 
 (require 'ask-core)
 (require 'ask-tools)
@@ -52,10 +61,5 @@
 
 
 (provide 'ask)
-;;; ask.el  ends here
-;; TODO: send images feature
-;;       preprocess input to detect org link to images
-;;       when present add to request
-;; TODO: ask-code-diff-replace
-;; TODO: ask-code-diff-replace-region
-;; TODO: add tool toggle in client prompt
+;;; ask.el ends here
+(package-buffer-info)
