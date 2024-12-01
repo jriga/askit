@@ -16,6 +16,17 @@
 ;;; Code:
 
 (require 'ask-core)
+(require 'tempo)
+(require 'org-tempo)
+
+;; `<p` expands to #+begin_prompt \n \n #+end_prompt
+(setq org-structure-template-alist
+      (append org-structure-template-alist '(("p" . "prompt"))))
+
+;; `<pr` expands to #+properties: add ask-properties for org mode
+(setq org-tempo-keywords-alist
+      (append org-tempo-keywords-alist '(("pr" . "properties"))))
+
 
 (defvar ask-clients-reg (make-hash-table :test 'equal))
 (defvar ask-org-properties-token "#+properties:")
