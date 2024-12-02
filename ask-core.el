@@ -15,6 +15,7 @@
 
 ;;; Code:
 (require 'base64)
+(require 'json)
 
 (defgroup ask nil
   "Interact with claude in Emacs."
@@ -44,6 +45,8 @@
   "Return api-key string."
   (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey"))
 
+
+
 (defun ask-anthropic-api-request
     (messages api-key version model max-tokens system temperature &optional tools tool_choice)
   "Send a request to the Anthropic API with the given API-KEY and MESSAGE."
@@ -51,6 +54,7 @@
          (url-request-extra-headers
           `(("x-api-key" . ,(funcall api-key))
             ("anthropic-version" . ,version)
+            ("anthropic-beta" . "pdfs-2024-09-25")
             ("content-type" . "application/json")))
          (request-data
           `(("model" . ,model)
