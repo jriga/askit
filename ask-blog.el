@@ -19,7 +19,7 @@
 
 (defun ask-blog-client ()
   "Prompt for the project client information."
-  (ask-make-client))
+  (ask-make-client nil nil :max-tokens 3000 :temperature 1))
 
 (setq ask-template-hugo-post
       "You are an experienced blog writer and programmer.
@@ -55,7 +55,8 @@ Don't forget to put the code language after the opening ```"))
   (let* ((rb (or rbe (region-beginning)))
          (re (or ren (region-end)))
          (current-region (buffer-substring-no-properties rb re))
-         (buffer-major-mode major-mode))
+         (buffer-major-mode major-mode)
+         (model (completing-read "Choose model: " ask-models nil t)))
     (switch-to-buffer-other-window "*AskIT-Blog*")
     (when (zerop (buffer-size))
       (insert "#+TITLE: AskIT-Blog\n\n"))
