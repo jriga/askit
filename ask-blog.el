@@ -67,7 +67,7 @@ Don't forget to put the code language after the opening ```"))
     ;;; TODO: (insert (org-insert-link link "source file"))
     (insert (ask-prompt (ask-blog-client)
                         (ask-blog-prompt current-region)
-                        :model (cadr ask-models)
+                        :model model
                         :system "You are an excellent and engaging blog writer."))
     (markdown-mode)))
 
