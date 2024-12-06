@@ -38,6 +38,13 @@
   "Save the CLIENT with the given NAME."
   (funcall (plist-get client :save) name))
 
+(defun ask-select-model ()
+  "Select a model defined in ask-models and insert at point in current buffer."
+  (interactive)
+  (with-current-buffer
+      (insert
+       (completing-read "Choose model: " ask-models nil t))))
+
 (defun ask-load (name)
   "Load the client with the given NAME."
   (let* ((filename (car (directory-files org-roam-directory t (format ".*%s.*\.org" name))))
