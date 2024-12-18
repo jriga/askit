@@ -52,23 +52,6 @@
                      (read (plist-get data :usage))
                      data)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(ask-deftool ask-get-diff (name &optional remote)
-  "Get the diff of a branch NAME with an optional REMOTE."
-  :name   (:string "Name of the target branch")
-  :remote (:string "Name of the target remote")
-  (shell-command-to-string "git diff"))
-
-(ask-deftool ask-get-commit (message)
-  "Commit the staged items on the branch with the given MESSAGE."
-  :message (:string "Commit staged changes")
-  (shell-command-to-string (format "git commit -am '%s'" message)))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (provide 'ask)
 ;;; ask.el ends here
