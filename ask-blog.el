@@ -1,4 +1,4 @@
-;;; ask-blog.el --- ask bloging utilities    -*- lexical-binding: t; -*-
+;;; ask-blog.el --- Ask bloging utilities    -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024 Jerome Riga
 
@@ -33,6 +33,7 @@ The blog must have a section called '## What we'll cover' listing the major poin
 ")
 
 (defun ask-prompt-with-markdown-format (p)
+  "Format prompt P for mardomn mode."
   (concat p "
 Only do the following if your response contains some code snippets.
 Enclose the code portion of your response with the tag ``` and ``` for markdown-mode.
@@ -40,14 +41,14 @@ Don't forget to put the code language after the opening ```"))
 
 
 (defun ask-blog-prompt (code)
-  "Return a prompt to create a blog post"
+  "Return a prompt to create a blog post for submitted CODE."
   (ask-prompt-with-markdown-format
    (format "%s\n\n<code>%s</code>\n\nWe are using Hugo for blogging with the markdorwn file format."
            ask-template-hugo-post
            code)))
 
 (defun ask-make-post-region (&optional rbe ren)
-  "Create a blog post from region."
+  "Create a blog post from region between RBE and REN."
   (interactive)
   (let* ((rb (or rbe (region-beginning)))
          (re (or ren (region-end)))
@@ -70,6 +71,7 @@ Don't forget to put the code language after the opening ```"))
 
 
 (defun ask-make-post ()
+  "Make a post entry for current buffer."
   (interactive)
   (ask-make-post-region (point-min) (point-max)))
 

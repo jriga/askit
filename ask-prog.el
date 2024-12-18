@@ -1,4 +1,4 @@
-;;; ask-prog.el --- ask coding utilities    -*- lexical-binding: t; -*-
+;;; ask-prog.el --- Ask coding utilities    -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024 Jerome Riga
 
@@ -19,6 +19,7 @@
   (ask-make-client))
 
 (defun ask-prompt-with-org-format (p)
+  "Format prompt P for org mode."
   (concat p "
 Only do the following if your response contains some code snippets.
 Enclose the code portion of your response with the tag #+begin_src #+end_src for org-mode.
@@ -29,23 +30,24 @@ provide code suggestions. Each suggestion have a one line short description.
 ")
 
 (defun ask-code-review-prompt (code)
-  "Prompt for a code review on the given code."
+  "Prompt for a code review on the given CODE."
   (ask-prompt-with-org-format
    (format "%s\n\nThe tag <code> is used to show the code to review.\n<code>%s</code>"
            ask-template-prompt
            code)))
 
 (defun ask-code-system-prompt (m)
-  "Prompt for the system information."
+  "Prompt M for the system information."
   (format "You are an expert %s programmer" m))
 
 
 (defun ask-code-review ()
+  "Review code in current buffer."
   (interactive)
   (ask-code-review-region (point-min) (point-max)))
 
 (defun ask-code-review-region (&optional rbe ren)
-  "Invoke the prompt function with the current region contents and other information."
+  "Review code in region between RBE and REN."
   (interactive)
   (let* ((rb (or rbe (region-beginning)))
          (re (or ren (region-end)))

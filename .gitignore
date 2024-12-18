@@ -3,3 +3,4 @@
 /Eldev-local
 /docs/
 /dist/
+*.elc
