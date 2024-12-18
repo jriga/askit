@@ -4,10 +4,7 @@
 
 ;; Author:     Jerome Riga <jriga@zemis.co.uk>
 ;; Maintainer: Jerome Riga <jriga@zemis.co.uk>
-;; Version:    0.0.1
-;; Keywords:   lisp, ai, claude, anthropic, tools
 ;; Homepage:   https://github.com/jriga/askit
-;; Package-Requires: ((emacs "29.4"))
 
 ;;; Commentary:
 
