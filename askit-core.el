@@ -48,7 +48,7 @@
   "Send a request to the Anthropic API with the given API-KEY and MESSAGE."
   (let* ((url-request-method "POST")
          (url-request-extra-headers
-          `(("x-api-key" . ,(funcall api-key))
+          `(("x-api-key" . ,(encode-coding-string (funcall api-key) 'utf-8))
             ("anthropic-version" . ,version)
             ("anthropic-beta" . "pdfs-2024-09-25")
             ("content-type" . "application/json")))
@@ -58,12 +58,13 @@
             ("system" . ,system)
             ("temperature" . ,temperature)
             ("messages" . ,messages)))
-         (url-request-data
-          (json-encode
+         (request-string (json-encode
            (if (and tools (not (seq-empty-p tools)))
                (append request-data `(("tools" . ,tools)
                                       ("tool_choice" . (,tool_choice))))
-             request-data))))
+             request-data)))
+         (request-bytes (encode-coding-string request-string 'utf-8))
+         (url-request-data request-bytes))
 
     (when askit-debug
       (askit-log url-request-extra-headers "Headers: %s")
