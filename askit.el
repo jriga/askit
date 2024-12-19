@@ -17,11 +17,34 @@
 ;;; Code:
 
 (require 'askit-core)
-(require 'askit-org)
-(require 'askit-blog)
-(require 'askit-prog)
 
-;; add kbd map
-;; add-hook for modes org, prog
+(defun askit-setup-org-map ()
+  "Set up askit org keyboard map."
+  (define-prefix-command 'askit-map)
+  (local-set-key (kbd "C-c p") 'askit-map)
+  (define-key askit-map (kbd "p") 'askit-prompt-at-point)
+  (define-key askit-map (kbd "d") 'askit-dump-client)
+  (define-key askit-map (kbd "r") 'askit-restore-client))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (progn
+              (require 'askit-org)
+              (askit-setup-org-map))))
+
+(defun askit-setup-prog-map ()
+  "Set up askit prog keyboard map."
+  (define-prefix-command 'askit-map)
+  (local-set-key (kbd "C-c p") 'askit-map)
+  (define-key askit-map (kbd "b") 'askit-code-review)
+  (define-key askit-map (kbd "r") 'askit-code-review-region))
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (progn
+              (require 'askit-prog)
+              (askit-setup-prog-map))))
+
+
 (provide 'askit)
 ;;; askit.el ends here

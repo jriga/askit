@@ -5,6 +5,8 @@
 say hi
 #+end_prompt
 
+Hi there!
+
 Hi there! Here's a simple Python code snippet for you:
 
 #+begin_src python
