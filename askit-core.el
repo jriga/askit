@@ -14,7 +14,7 @@
 (require 'base64)
 (require 'json)
 
-(defgroup ask nil
+(defgroup askit nil
   "Interact with claude in Emacs."
   :group 'hypermedia)
 
@@ -23,10 +23,10 @@
 (defvar askit-model       (car (last askit-models))) ;; haiku
 (defvar askit-version    "2023-06-01")
 (defvar askit-max-tokens 1024)
-(defcustom askit-api-key #'askit-api-key-from-auth-source
+(defcustom askit-api-key #'askit-api-key-retriever
   "Function that returns the api-key as string."
   :type 'function
-  :group 'ask)
+  :group 'askit)
 (defvar askit-temperature 0.0)
 (defvar askit-system      "")
 (defvar askit-tools       [])
@@ -38,10 +38,9 @@
   (let ((s (or m "-->> %s")))
     (message s o)))
 
-(defun askit-api-key-from-auth-source ()
+(defun askit-api-key-retriever ()
   "Return api-key string."
   (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey"))
-
 
 
 (defun askit-anthropic-api-request
@@ -317,6 +316,42 @@
             :history history
             :usage usage))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; helper funs
+
+(defun askit-history (client)
+  "Return the history of the CLIENT."
+  (funcall (plist-get client :history)))
+
+(defun askit-usage (client)
+  "Return the usage information of the CLIENT."
+  (funcall (plist-get client :usage)))
+
+(defun askit-prompt (client prompt-text &rest options)
+  "Prompt the CLIENT with PROMPT-TEXT and OPTIONS."
+  (funcall (plist-get client :prompt) prompt-text options))
+
+(defun askit-save (client name)
+  "Save the CLIENT with the given NAME."
+  (funcall (plist-get client :save) name))
+
+(defun askit-select-model ()
+  "Select a model defined in askit-models and insert at point in current buffer."
+  (interactive)
+  (with-current-buffer
+      (insert
+       (completing-read "Choose model: " askit-models nil t))))
+
+(defun askit-load (name)
+  "Load the client with the given NAME."
+  (let* ((filename (car (directory-files org-roam-directory t (format ".*%s.*\\.org" name))))
+         (data (askit-load-saved-file filename)))
+    (askit-make-client (read (plist-get data :history))
+                     (read (plist-get data :usage))
+                     data)))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; begin tools section
 
 (defvar askit-tools-properties-reg (make-hash-table))

@@ -21,37 +21,7 @@
 (require 'askit-blog)
 (require 'askit-prog)
 
-(defun askit-history (client)
-  "Return the history of the CLIENT."
-  (funcall (plist-get client :history)))
-
-(defun askit-usage (client)
-  "Return the usage information of the CLIENT."
-  (funcall (plist-get client :usage)))
-
-(defun askit-prompt (client prompt-text &rest options)
-  "Prompt the CLIENT with PROMPT-TEXT and OPTIONS."
-  (funcall (plist-get client :prompt) prompt-text options))
-
-(defun askit-save (client name)
-  "Save the CLIENT with the given NAME."
-  (funcall (plist-get client :save) name))
-
-(defun askit-select-model ()
-  "Select a model defined in askit-models and insert at point in current buffer."
-  (interactive)
-  (with-current-buffer
-      (insert
-       (completing-read "Choose model: " askit-models nil t))))
-
-(defun askit-load (name)
-  "Load the client with the given NAME."
-  (let* ((filename (car (directory-files org-roam-directory t (format ".*%s.*\\.org" name))))
-         (data (askit-load-saved-file filename)))
-    (askit-make-client (read (plist-get data :history))
-                     (read (plist-get data :usage))
-                     data)))
-
-
+;; add kbd map
+;; add-hook for modes org, prog
 (provide 'askit)
 ;;; askit.el ends here
