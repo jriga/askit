@@ -10,9 +10,9 @@
 
   (it "lists models"
       (expect askit-models :to-have-same-items-as '("claude-3-opus-20240229"
-                                                  "claude-3-5-sonnet-20241022"
-                                                  "claude-3-5-sonnet-20240620"
-                                                  "claude-3-haiku-20240307"))))
+                                                    "claude-3-5-sonnet-20241022"
+                                                    "claude-3-5-sonnet-20240620"
+                                                    "claude-3-haiku-20240307"))))
 
 (describe "askit-mk-msg"
   (describe "for simple prompt"
@@ -42,4 +42,16 @@
            ;; (message (json-encode expected))
            (expect (askit-mk-msg content role) :to-have-same-items-as expected)))))
 
-;;; ends here
+
+(describe "askit client"
+   :var ((client (askit-make-client)))
+   (before-each
+    (fset 'askit-api-key-retriever (lambda () (getenv "TEST_API_KEY"))))
+
+   (it "show its usage"
+       (expect (askit-usage client) :to-have-same-items-as '(:in 0 :out 0 :total 0)))
+
+   (xit "communicate with provider"
+       (expect (askit-prompt client "reply 'hi' and nothing else") :to-match "hi")))
+
+;;; ends here,
