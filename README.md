@@ -3,7 +3,8 @@
 Personal emacs frontend for claude AI this is very much work in progress.
 
 # TODOS
-- [x] add session support
-- [x] dump/restore session
-- [x] send attachments
+- [X] add session support
+- [X] dump/restore session
+- [X] send attachments
+- [X] rename ask to askit
 - [ ] change http lib to enable streaming responses

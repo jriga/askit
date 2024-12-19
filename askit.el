@@ -1,4 +1,4 @@
-;;; ask.el --- Claude ai wrapper    -*- lexical-binding: t; -*-
+;;; askit.el --- Claude ai wrapper    -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024 Jerome Riga
 
@@ -16,42 +16,42 @@
 
 ;;; Code:
 
-(require 'ask-core)
-(require 'ask-org)
-(require 'ask-blog)
-(require 'ask-prog)
+(require 'askit-core)
+(require 'askit-org)
+(require 'askit-blog)
+(require 'askit-prog)
 
-(defun ask-history (client)
+(defun askit-history (client)
   "Return the history of the CLIENT."
   (funcall (plist-get client :history)))
 
-(defun ask-usage (client)
+(defun askit-usage (client)
   "Return the usage information of the CLIENT."
   (funcall (plist-get client :usage)))
 
-(defun ask-prompt (client prompt-text &rest options)
+(defun askit-prompt (client prompt-text &rest options)
   "Prompt the CLIENT with PROMPT-TEXT and OPTIONS."
   (funcall (plist-get client :prompt) prompt-text options))
 
-(defun ask-save (client name)
+(defun askit-save (client name)
   "Save the CLIENT with the given NAME."
   (funcall (plist-get client :save) name))
 
-(defun ask-select-model ()
-  "Select a model defined in ask-models and insert at point in current buffer."
+(defun askit-select-model ()
+  "Select a model defined in askit-models and insert at point in current buffer."
   (interactive)
   (with-current-buffer
       (insert
-       (completing-read "Choose model: " ask-models nil t))))
+       (completing-read "Choose model: " askit-models nil t))))
 
-(defun ask-load (name)
+(defun askit-load (name)
   "Load the client with the given NAME."
   (let* ((filename (car (directory-files org-roam-directory t (format ".*%s.*\\.org" name))))
-         (data (ask-load-saved-file filename)))
-    (ask-make-client (read (plist-get data :history))
+         (data (askit-load-saved-file filename)))
+    (askit-make-client (read (plist-get data :history))
                      (read (plist-get data :usage))
                      data)))
 
 
-(provide 'ask)
-;;; ask.el ends here
+(provide 'askit)
+;;; askit.el ends here

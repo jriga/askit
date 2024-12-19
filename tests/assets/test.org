@@ -9,9 +9,9 @@ I'm afraid I don't have any code to share in response to "say hi". As an AI assi
 
 clear sessions
 #+begin_src elisp
- (clrhash ask-clients-reg)
-;; (hash-table-keys ask-clients-reg)
-;;(ask-history (gethash '1733002841 ask-clients-reg))
+ (clrhash askit-clients-reg)
+;; (hash-table-keys askit-clients-reg)
+;;(askit-history (gethash '1733002841 askit-clients-reg))
 
 #+end_src
 
